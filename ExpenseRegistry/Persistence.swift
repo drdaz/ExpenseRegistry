@@ -20,8 +20,20 @@ struct Persistence {
         return container
     }()
 
-    static func saveExpense(expense: Expense) async throws {
-        fatalError("Not implemented yet")
+    static func addExpense(expense: Expense) async throws {
+        let bgContext = container.newBackgroundContext()
+        try await bgContext.perform(schedule: .immediate) {
+            
+            let persistentExpense = PersistentExpense(context: bgContext)
+            persistentExpense.currency = expense.currency
+            persistentExpense.total = expense.total
+            persistentExpense.note = expense.note
+            persistentExpense.filename = expense.filename
+            persistentExpense.date = expense.date
+            persistentExpense.title = expense.title
+            
+            try bgContext.save()
+        }
     }
     
     static func getExpenses() async throws -> [Expense] {
@@ -32,9 +44,4 @@ struct Persistence {
         fatalError("Not implemented yet")
     }
     
-    static func getExpense(id: Int64) async throws -> Expense {
-        fatalError("Not implemented yet")
-    }
 }
-
-

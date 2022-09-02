@@ -27,19 +27,38 @@ class ExpenseRegistryTests: XCTestCase {
         let note = UUID().uuidString
         let title = UUID().uuidString
         let total = Float.random(in: 0...1337)
+        let currency = ["EUR", "USD", "DKK", "GBP"].randomElement()
         
         let expense = Expense(filename: fileName,
-                              currency: "EUR",
+                              currency: currency,
                               date: date,
                               note: note,
                               title: title,
                               total: total)
                               
-        try! await Persistence.saveExpense(expense: expense)
+        try! await Persistence.addExpense(expense: expense)
         
-        try! await Persistence.container.newBackgroundContext().perform(schedule: NSManagedObjectContext.ScheduledTaskType.immediate) {
-            
+        let bgContext = Persistence.container.newBackgroundContext()
+        
+        let fetchRequest = PersistentExpense.fetchRequest()
+        
+        let savedExpenses = try! await bgContext.perform(schedule: .immediate) { () -> [PersistentExpense] in
+            let results = try bgContext.fetch(fetchRequest)
+            return results
         }
+        
+        // This let will crash if Core Data contains no exactly matching objects
+        let _ = savedExpenses.filter { savedExpense in
+            return (
+                savedExpense.filename == expense.filename &&
+                savedExpense.date == expense.date &&
+                savedExpense.note == expense.note &&
+                savedExpense.title == expense.title &&
+                savedExpense.total == expense.total &&
+                savedExpense.currency == expense.currency
+            )
+        }.first!
+        
     }
 
 }
