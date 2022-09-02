@@ -6,6 +6,8 @@
 //
 
 import XCTest
+import CoreData
+
 @testable import ExpenseRegistry
 
 class ExpenseRegistryTests: XCTestCase {
@@ -18,18 +20,25 @@ class ExpenseRegistryTests: XCTestCase {
         // Put teardown code here. This method is called after the invocation of each test method in the class.
     }
 
-    func testExample() throws {
-        // This is an example of a functional test case.
-        // Use XCTAssert and related functions to verify your tests produce the correct results.
-        // Any test you write for XCTest can be annotated as throws and async.
-        // Mark your test throws to produce an unexpected failure when your test encounters an uncaught error.
-        // Mark your test async to allow awaiting for asynchronous code to complete. Check the results with assertions afterwards.
-    }
-
-    func testPerformanceExample() throws {
-        // This is an example of a performance test case.
-        self.measure {
-            // Put the code you want to measure the time of here.
+    func testAddExpense() async throws {
+        // Add an expense, ensure it's saved in the DB
+        let fileName = UUID().uuidString
+        let date = Date.now
+        let note = UUID().uuidString
+        let title = UUID().uuidString
+        let total = Float.random(in: 0...1337)
+        
+        let expense = Expense(filename: fileName,
+                              currency: "EUR",
+                              date: date,
+                              note: note,
+                              title: title,
+                              total: total)
+                              
+        try! await Persistence.saveExpense(expense: expense)
+        
+        try! await Persistence.container.newBackgroundContext().perform(schedule: NSManagedObjectContext.ScheduledTaskType.immediate) {
+            
         }
     }
 
