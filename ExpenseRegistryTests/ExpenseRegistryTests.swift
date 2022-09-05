@@ -22,6 +22,64 @@ class ExpenseRegistryTests: XCTestCase {
 
     func testAddExpense() async throws {
         // Add an expense, ensure it's saved in the DB
+        let expense = generateExpense()
+                              
+        try! await Persistence.addExpense(expense: expense)
+        
+        let bgContext = Persistence.container.newBackgroundContext()
+        
+        let fetchRequest = PersistentExpense.fetchRequest()
+        
+        let savedExpenses = try! await bgContext.perform(schedule: .immediate) { () -> [PersistentExpense] in
+            let results = try bgContext.fetch(fetchRequest)
+            return results
+        }
+        
+        // This [].first! will crash if local storage contains no exactly matching objects
+        let _ = savedExpenses.filter { savedExpense in
+            return (
+                savedExpense.filename == expense.filename &&
+                savedExpense.date == expense.date &&
+                savedExpense.note == expense.note &&
+                savedExpense.title == expense.title &&
+                savedExpense.total == expense.total &&
+                savedExpense.currency == expense.currency
+            )
+        }.first!
+        
+    }
+    
+    func testGetExpenses() async throws {
+        // Add some expenses, make sure they're in the output of the get method
+        var expenses = [Expense]()
+        
+        for _ in 1...5 { expenses.append(generateExpense()) }
+        
+        await withThrowingTaskGroup(of: Void.self, returning: Void.self) { group in
+            for expense in expenses {
+                group.addTask {
+                    try await Persistence.addExpense(expense: expense)
+                }
+            }
+        }
+
+        
+        let savedExpenses = try await Persistence.getExpenses()
+        
+        let savedSet = Set(savedExpenses)
+        let inputSet = Set(expenses)
+        
+        XCTAssert(inputSet.isSubset(of: savedSet))
+        
+    }
+}
+
+
+// MARK: Helpers
+
+extension ExpenseRegistryTests {
+    
+    func generateExpense() -> Expense {
         let fileName = UUID().uuidString
         let date = Date.now
         let note = UUID().uuidString
@@ -35,30 +93,7 @@ class ExpenseRegistryTests: XCTestCase {
                               note: note,
                               title: title,
                               total: total)
-                              
-        try! await Persistence.addExpense(expense: expense)
-        
-        let bgContext = Persistence.container.newBackgroundContext()
-        
-        let fetchRequest = PersistentExpense.fetchRequest()
-        
-        let savedExpenses = try! await bgContext.perform(schedule: .immediate) { () -> [PersistentExpense] in
-            let results = try bgContext.fetch(fetchRequest)
-            return results
-        }
-        
-        // This let will crash if Core Data contains no exactly matching objects
-        let _ = savedExpenses.filter { savedExpense in
-            return (
-                savedExpense.filename == expense.filename &&
-                savedExpense.date == expense.date &&
-                savedExpense.note == expense.note &&
-                savedExpense.title == expense.title &&
-                savedExpense.total == expense.total &&
-                savedExpense.currency == expense.currency
-            )
-        }.first!
-        
+        return expense
     }
-
+    
 }

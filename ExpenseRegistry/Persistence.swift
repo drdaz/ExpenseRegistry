@@ -37,11 +37,36 @@ struct Persistence {
     }
     
     static func getExpenses() async throws -> [Expense] {
-        fatalError("Not implemented yet")
+        let bgContext = container.newBackgroundContext()
+        let fetchRequest = PersistentExpense.fetchRequest()
+        
+        fetchRequest.sortDescriptors = [
+            NSSortDescriptor(key: "date", ascending: true)
+        ]
+        
+        let persistentExpenses = try await bgContext.perform(schedule: .immediate, {
+            return try bgContext.fetch(fetchRequest)
+        })
+        
+        return persistentExpenses.map { $0.expense }
     }
     
     static func getExpense(index: Int) async throws -> Expense {
         fatalError("Not implemented yet")
+    }
+    
+}
+
+
+fileprivate extension PersistentExpense {
+    
+    var expense: Expense {
+        return Expense(filename: filename!,
+                       currency: currency,
+                       date: date!,
+                       note: note,
+                       title: title!,
+                       total: total)
     }
     
 }
