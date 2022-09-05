@@ -10,7 +10,7 @@ import CoreData
 
 struct Persistence {
     
-    internal static var container: NSPersistentContainer = {
+    static var container: NSPersistentContainer = {
         let container = NSPersistentContainer(name: "ExpenseRegistry")
         container.loadPersistentStores { _, err in
             if let err = err as NSError? {
@@ -19,9 +19,20 @@ struct Persistence {
         }
         return container
     }()
+    
+    fileprivate static var context: NSManagedObjectContext = {
+        return container.newBackgroundContext()
+    }()
 
+    static var onExpenseAdded: ((Expense) -> Void)? {
+        didSet {
+            listener = onExpenseAdded != nil ? FetchedResultsListener() : nil
+        }
+    }
+    fileprivate static var listener: FetchedResultsListener?
+    
     static func addExpense(expense: Expense) async throws {
-        let bgContext = container.newBackgroundContext()
+        let bgContext = context
         try await bgContext.perform(schedule: .immediate) {
             
             let persistentExpense = PersistentExpense(context: bgContext)
@@ -37,7 +48,7 @@ struct Persistence {
     }
     
     static func getExpenses() async throws -> [Expense] {
-        let bgContext = container.newBackgroundContext()
+        let bgContext = context
         let fetchRequest = PersistentExpense.fetchRequest()
         
         fetchRequest.sortDescriptors = [
@@ -57,6 +68,42 @@ struct Persistence {
     
 }
 
+fileprivate class FetchedResultsListener: NSObject, NSFetchedResultsControllerDelegate {
+    
+    var frc: NSFetchedResultsController<PersistentExpense>
+    
+    func controller(_ controller: NSFetchedResultsController<NSFetchRequestResult>, didChange anObject: Any, at indexPath: IndexPath?, for type: NSFetchedResultsChangeType, newIndexPath: IndexPath?) {
+        
+        switch (type) {
+        case .insert:
+            let persistentExpense = anObject as! PersistentExpense
+            if let handler = Persistence.onExpenseAdded {
+                handler(persistentExpense.expense)
+            }
+        case .delete:
+            fatalError("Not implemented")
+        case .move:
+            fatalError("Not implemented")
+        case .update:
+            fatalError("Not implemented")
+        @unknown default:
+            fatalError("Not implemented")
+        }
+    }
+    
+    override init() {
+        let fetchRequest = PersistentExpense.fetchRequest()
+        fetchRequest.sortDescriptors = [NSSortDescriptor(key: "date", ascending: true)]
+        frc = NSFetchedResultsController(fetchRequest: fetchRequest,
+                                         managedObjectContext: Persistence.context,
+                                         sectionNameKeyPath: nil,
+                                         cacheName: nil)
+        super.init()
+        frc.delegate = self
+        try! frc.performFetch()
+    }
+    
+}
 
 fileprivate extension PersistentExpense {
     

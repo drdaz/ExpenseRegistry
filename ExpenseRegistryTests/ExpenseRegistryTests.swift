@@ -72,6 +72,24 @@ class ExpenseRegistryTests: XCTestCase {
         XCTAssert(inputSet.isSubset(of: savedSet))
         
     }
+    
+    func testAddExpenseTriggersCallback() async throws {
+        // Save an expense and catch the callback
+        
+        let expense = generateExpense()
+        
+        let expect = expectation(description: "Added callback should fire")
+        Persistence.onExpenseAdded = { exp in
+            XCTAssert(expense == exp)
+            expect.fulfill()
+        }
+        
+        try await Persistence.addExpense(expense: expense)
+        
+        await waitForExpectations(timeout: 5)
+        
+        Persistence.onExpenseAdded = nil
+    }
 }
 
 
