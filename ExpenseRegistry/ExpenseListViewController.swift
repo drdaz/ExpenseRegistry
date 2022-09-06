@@ -15,6 +15,14 @@ class ExpenseListViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        Persistence.onExpenseAdded = { [unowned self] exp in
+            DispatchQueue.main.async {
+                self.expenses.append(exp)
+                self.tableView.reloadData()
+            }
+        }
+        
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -26,13 +34,16 @@ class ExpenseListViewController: UIViewController {
         Task.init {
             expenses = try await Persistence.getExpenses()
             tableView.reloadData()
-            Persistence.onExpenseAdded = { [unowned self] exp in
-                self.expenses.append(exp)
-                self.tableView.reloadRows(at: [IndexPath(item: expenses.endIndex - 1, section: 0)], with: .automatic)
-            }
         }
+        
     }
 
+    @IBAction func addButtonPressed(_ sender: Any) {
+        // Show New Expense popover
+        performSegue(withIdentifier: "ShowNewExpense", sender: nil)
+    }
+    
+    
 }
 
 extension ExpenseListViewController: UITableViewDelegate, UITableViewDataSource {
@@ -51,4 +62,7 @@ extension ExpenseListViewController: UITableViewDelegate, UITableViewDataSource 
         return cell
     }
     
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        
+    }
 }
