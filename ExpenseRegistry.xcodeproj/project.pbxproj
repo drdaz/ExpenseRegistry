@@ -9,7 +9,7 @@
 /* Begin PBXBuildFile section */
 		BC3F564728C222CF00952856 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC3F564628C222CF00952856 /* AppDelegate.swift */; };
 		BC3F564928C222CF00952856 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC3F564828C222CF00952856 /* SceneDelegate.swift */; };
-		BC3F564B28C222CF00952856 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC3F564A28C222CF00952856 /* ViewController.swift */; };
+		BC3F564B28C222CF00952856 /* ExpenseListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC3F564A28C222CF00952856 /* ExpenseListViewController.swift */; };
 		BC3F564E28C222CF00952856 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = BC3F564C28C222CF00952856 /* Main.storyboard */; };
 		BC3F565128C222CF00952856 /* ExpenseRegistry.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = BC3F564F28C222CF00952856 /* ExpenseRegistry.xcdatamodeld */; };
 		BC3F565328C222D000952856 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = BC3F565228C222D000952856 /* Assets.xcassets */; };
@@ -42,7 +42,7 @@
 		BC3F564328C222CF00952856 /* ExpenseRegistry.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ExpenseRegistry.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		BC3F564628C222CF00952856 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		BC3F564828C222CF00952856 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
-		BC3F564A28C222CF00952856 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
+		BC3F564A28C222CF00952856 /* ExpenseListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExpenseListViewController.swift; sourceTree = "<group>"; };
 		BC3F564D28C222CF00952856 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		BC3F565028C222CF00952856 /* ExpenseRegistry.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = ExpenseRegistry.xcdatamodel; sourceTree = "<group>"; };
 		BC3F565228C222D000952856 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -107,7 +107,7 @@
 			children = (
 				BC3F564628C222CF00952856 /* AppDelegate.swift */,
 				BC3F564828C222CF00952856 /* SceneDelegate.swift */,
-				BC3F564A28C222CF00952856 /* ViewController.swift */,
+				BC3F564A28C222CF00952856 /* ExpenseListViewController.swift */,
 				BC3F567F28C2343100952856 /* Expense.swift */,
 				BC3F567928C2296F00952856 /* Persistence.swift */,
 				BC3F564C28C222CF00952856 /* Main.storyboard */,
@@ -268,7 +268,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				BC3F568028C2343100952856 /* Expense.swift in Sources */,
-				BC3F564B28C222CF00952856 /* ViewController.swift in Sources */,
+				BC3F564B28C222CF00952856 /* ExpenseListViewController.swift in Sources */,
 				BC3F565128C222CF00952856 /* ExpenseRegistry.xcdatamodeld in Sources */,
 				BC3F564728C222CF00952856 /* AppDelegate.swift in Sources */,
 				BC3F564928C222CF00952856 /* SceneDelegate.swift in Sources */,
