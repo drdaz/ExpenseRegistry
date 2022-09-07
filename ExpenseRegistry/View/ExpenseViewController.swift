@@ -20,6 +20,9 @@ class ExpenseViewController: UIViewController {
     @IBOutlet weak var currencyField: UITextField!
     @IBOutlet weak var totalField: UITextField!
     @IBOutlet weak var noteField: UITextField!
+    @IBOutlet weak var scrollView: UIScrollView!
+    
+    var keyboardFieldConstraint: NSLayoutConstraint!
     
     var mode: Mode = .new
     
@@ -37,9 +40,8 @@ class ExpenseViewController: UIViewController {
                 
                 do {
                     image = try await capture.captureImage(presenter: self)
-                    if image == nil {
-                        dismiss(animated: true)
-                    }
+                    if image == nil { dismiss(animated: true) }
+                    titleField.becomeFirstResponder()
                 }
                 catch let e {
                     Shared.UI.presentError(error: e, presenter: self)
@@ -64,7 +66,16 @@ class ExpenseViewController: UIViewController {
         }
         
         setupTabbingBetweenFields(fields: [titleField, currencyField, totalField, noteField])
+        totalField.addDoneButtonToKeyboard(target: self, action: #selector(doneButtonAction))
         
+        scrollView.translatesAutoresizingMaskIntoConstraints = false
+        view.keyboardLayoutGuide.followsUndockedKeyboard = false
+        scrollView.bottomAnchor.constraint(equalTo: view.keyboardLayoutGuide.topAnchor, constant: -30).isActive = true
+        
+    }
+    
+    @objc fileprivate func doneButtonAction() {
+        totalField.sendActions(for: .editingDidEndOnExit)
     }
 
     @IBAction func cancelButtonPressed(_ sender: Any) {
@@ -166,4 +177,25 @@ fileprivate class PhotoCapture: NSObject, UIImagePickerControllerDelegate, UINav
     }
     
 
+}
+
+
+extension UITextField{
+    
+    func addDoneButtonToKeyboard(target: Any, action: Selector){
+        let doneToolbar: UIToolbar = UIToolbar(frame: CGRect(x: 0, y: 0, width: 300, height: 40))
+        doneToolbar.barStyle = UIBarStyle.default
+        
+        let flexSpace = UIBarButtonItem(barButtonSystemItem: UIBarButtonItem.SystemItem.flexibleSpace, target: nil, action: nil)
+        let done: UIBarButtonItem = UIBarButtonItem(title: "Done", style: UIBarButtonItem.Style.done, target: target, action: action)
+        
+        var items = [UIBarButtonItem]()
+        items.append(flexSpace)
+        items.append(done)
+        
+        doneToolbar.items = items
+        doneToolbar.sizeToFit()
+        
+        self.inputAccessoryView = doneToolbar
+    }
 }
