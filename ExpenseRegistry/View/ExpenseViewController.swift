@@ -34,10 +34,17 @@ class ExpenseViewController: UIViewController {
         case .new:
             Task.init {
                 let capture = PhotoCapture()
-                image = await capture.captureImage(presenter: self)
-                if image == nil {
-                    dismiss(animated: true)
+                
+                do {
+                    image = try await capture.captureImage(presenter: self)
+                    if image == nil {
+                        dismiss(animated: true)
+                    }
                 }
+                catch let e {
+                    Shared.UI.presentError(error: e, presenter: self)
+                }
+                
             }
         case .view(expense: let expense):
             // Populate the fields, switch off interaction
@@ -89,17 +96,20 @@ class ExpenseViewController: UIViewController {
         }
         else {
             // Display an error
-            Shared.UI.presentError(error: ValidationError.missingArgs, presenter: self)
+            Shared.UI.presentError(error: Error.missingArgs, presenter: self)
         }
     }
     
-    enum ValidationError: LocalizedError {
+    enum Error: LocalizedError {
         case missingArgs
+        case missingCamera
         
         var errorDescription: String? {
             switch (self) {
             case .missingArgs:
                 return "Please provide values for title, currency and total."
+            case .missingCamera:
+                return "Sorry, your device needs a camera"
             }
         }
         
@@ -110,16 +120,21 @@ class ExpenseViewController: UIViewController {
 
 fileprivate class PhotoCapture: NSObject, UIImagePickerControllerDelegate, UINavigationControllerDelegate {
     
-    private typealias PhotoContinuation = CheckedContinuation<UIImage?, Never>
+    private typealias PhotoContinuation = CheckedContinuation<UIImage?, Error>
     private var photoChosenContinuation: PhotoContinuation!
     
-    func captureImage(presenter: UIViewController) async -> UIImage? {
-        return await withCheckedContinuation({ [unowned self] cont in
+    func captureImage(presenter: UIViewController) async throws -> UIImage? {
+        return try await withCheckedThrowingContinuation({ [unowned self] cont in
             photoChosenContinuation = cont
             let picker = UIImagePickerController()
-            picker.sourceType = .camera
-            picker.delegate = self
-            presenter.present(picker, animated: true)
+            if UIImagePickerController.isSourceTypeAvailable(.camera) {
+                picker.sourceType = .camera
+                picker.delegate = self
+                presenter.present(picker, animated: true)
+            }
+            else {
+                cont.resume(throwing: ExpenseViewController.Error.missingCamera)
+            }
         })
     }
     
