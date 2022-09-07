@@ -156,6 +156,13 @@ fileprivate class PhotoCapture: NSObject, UIImagePickerControllerDelegate, UINav
             let picker = UIImagePickerController()
             if UIImagePickerController.isSourceTypeAvailable(.camera) {
                 picker.sourceType = .camera
+                let label = UILabel()
+                label.text = "Take a photo of your receipt"
+                let overlayFrame = picker.cameraOverlayView!.frame
+                label.frame = CGRect(x: overlayFrame.minX, y: overlayFrame.minY, width: overlayFrame.width, height: 100)
+                label.textAlignment = .center
+                picker.cameraOverlayView?.contentMode = .top
+                picker.cameraOverlayView = label
                 picker.delegate = self
                 presenter.present(picker, animated: true)
             }
