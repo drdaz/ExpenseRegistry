@@ -139,7 +139,7 @@ fileprivate class PhotoCapture: NSObject, UIImagePickerControllerDelegate, UINav
     }
     
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
-        let photo = info[.originalImage] as? UIImage
+        let photo = info[.originalImage] as! UIImage
         photoChosenContinuation.resume(returning: photo)
         picker.dismiss(animated: true)
     }
@@ -149,4 +149,5 @@ fileprivate class PhotoCapture: NSObject, UIImagePickerControllerDelegate, UINav
         picker.dismiss(animated: true)
     }
     
+
 }

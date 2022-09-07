@@ -37,7 +37,7 @@ struct Persistence {
         // Persist the image to disk
         let filename = UUID().uuidString
         let url = URL(fileURLWithPath: dirPath).appendingPathComponent(filename)
-        let imgData = expense.image.pngData()!
+        let imgData = fixOrientation(img: expense.image).pngData()!
         try imgData.write(to: url)
         
         let bgContext = context
@@ -54,6 +54,22 @@ struct Persistence {
             try bgContext.save()
         }
     }
+    
+    static func fixOrientation(img: UIImage) -> UIImage {
+        if (img.imageOrientation == .up) {
+            return img
+        }
+
+        UIGraphicsBeginImageContextWithOptions(img.size, false, img.scale)
+        let rect = CGRect(x: 0, y: 0, width: img.size.width, height: img.size.height)
+        img.draw(in: rect)
+
+        let normalizedImage = UIGraphicsGetImageFromCurrentImageContext()!
+        UIGraphicsEndImageContext()
+
+        return normalizedImage
+    }
+    
     
     static func getExpenses() async throws -> [Expense] {
         let bgContext = context
