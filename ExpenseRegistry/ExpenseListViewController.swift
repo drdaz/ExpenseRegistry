@@ -43,6 +43,11 @@ class ExpenseListViewController: UIViewController {
         performSegue(withIdentifier: "ShowNewExpense", sender: nil)
     }
     
+    func dateStringForDisplay(date: Date) -> String {
+        let formatter = DateFormatter()
+        formatter.dateFormat = "dd/MM/yy HH:mm"
+        return formatter.string(from: date)
+    }
     
 }
 
@@ -57,7 +62,7 @@ extension ExpenseListViewController: UITableViewDelegate, UITableViewDataSource 
         var config = cell.defaultContentConfiguration()
         let expense = expenses[indexPath.item]
         config.text = expense.title
-        config.secondaryText = expense.date.description
+        config.secondaryText = dateStringForDisplay(date: expense.date)
         cell.contentConfiguration = config
         return cell
     }
