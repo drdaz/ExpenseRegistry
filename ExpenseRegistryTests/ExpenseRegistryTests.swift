@@ -36,9 +36,8 @@ class ExpenseRegistryTests: XCTestCase {
         }
         
         // This [].first! will crash if local storage contains no exactly matching objects
-        let _ = savedExpenses.filter { savedExpense in
+        let result = savedExpenses.filter { savedExpense in
             return (
-                savedExpense.filename == expense.filename &&
                 savedExpense.date == expense.date &&
                 savedExpense.note == expense.note &&
                 savedExpense.title == expense.title &&
@@ -46,6 +45,11 @@ class ExpenseRegistryTests: XCTestCase {
                 savedExpense.currency == expense.currency
             )
         }.first!
+        
+        // Ensure file is saved on filesystem
+        let data = try Data(contentsOf: URL(fileURLWithPath: Persistence.dirPath).appendingPathComponent(result.filename!))
+        
+        XCTAssert(data == expense.image.pngData())
         
     }
     
@@ -98,14 +102,18 @@ class ExpenseRegistryTests: XCTestCase {
 extension ExpenseRegistryTests {
     
     func generateExpense() -> Expense {
-        let fileName = UUID().uuidString
         let date = Date.now
         let note = UUID().uuidString
         let title = UUID().uuidString
         let total = Float.random(in: 0...1337)
         let currency = ["EUR", "USD", "DKK", "GBP"].randomElement()
         
-        let expense = Expense(filename: fileName,
+        let name = ["600x400", "700x400"].randomElement()
+        let testBundle = Bundle.init(for: Self.self)
+        let path = testBundle.path(forResource: name, ofType: "png", inDirectory: nil)!
+        let image = UIImage.init(contentsOfFile: path)!
+        
+        let expense = Expense(image: image,
                               currency: currency,
                               date: date,
                               note: note,

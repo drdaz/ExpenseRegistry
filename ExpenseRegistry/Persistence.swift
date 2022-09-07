@@ -7,6 +7,7 @@
 
 import Foundation
 import CoreData
+import UIKit
 
 struct Persistence {
     
@@ -32,6 +33,13 @@ struct Persistence {
     fileprivate static var listener: FetchedResultsListener?
     
     static func addExpense(expense: Expense) async throws {
+        
+        // Persist the image to disk
+        let filename = UUID().uuidString
+        let url = URL(fileURLWithPath: dirPath).appendingPathComponent(filename)
+        let imgData = expense.image.pngData()!
+        try imgData.write(to: url)
+        
         let bgContext = context
         try await bgContext.perform(schedule: .immediate) {
             
@@ -39,7 +47,7 @@ struct Persistence {
             persistentExpense.currency = expense.currency
             persistentExpense.total = expense.total
             persistentExpense.note = expense.note
-            persistentExpense.filename = expense.filename
+            persistentExpense.filename = filename
             persistentExpense.date = expense.date
             persistentExpense.title = expense.title
             
@@ -64,6 +72,11 @@ struct Persistence {
     
     static func getExpense(index: Int) async throws -> Expense {
         fatalError("Not implemented yet")
+    }
+    
+    
+    static var dirPath: String {
+        return NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true).first!
     }
     
 }
@@ -108,7 +121,7 @@ fileprivate class FetchedResultsListener: NSObject, NSFetchedResultsControllerDe
 fileprivate extension PersistentExpense {
     
     var expense: Expense {
-        return Expense(filename: filename!,
+        return Expense(image: UIImage(contentsOfFile: Persistence.dirPath.appending("/\(filename!)"))!,
                        currency: currency,
                        date: date!,
                        note: note,

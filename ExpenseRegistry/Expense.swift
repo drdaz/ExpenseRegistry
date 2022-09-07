@@ -6,10 +6,11 @@
 //
 
 import Foundation
+import UIKit
 
 struct Expense: Hashable {
     
-    var filename: String
+    var image: UIImage
     var currency: String?
     var date: Date
     var note: String?

@@ -44,8 +44,7 @@ class NewExpenseViewController: UIViewController {
            let total = totalField.text,
            let totalFloat = Float(total)
         {
-            let filename = UUID().uuidString
-            let expense = Expense(filename: filename,
+            let expense = Expense(image: image,
                                   currency: currency,
                                   date: Date.now,
                                   note: noteField.text,

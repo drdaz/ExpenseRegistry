@@ -19,6 +19,8 @@
 		BC3F566D28C222D000952856 /* ExpenseRegistryUITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC3F566C28C222D000952856 /* ExpenseRegistryUITestsLaunchTests.swift */; };
 		BC3F567A28C2296F00952856 /* Persistence.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC3F567928C2296F00952856 /* Persistence.swift */; };
 		BC3F568028C2343100952856 /* Expense.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC3F567F28C2343100952856 /* Expense.swift */; };
+		BCCDF74228C8AF4D00A74BE6 /* 700x400.png in Resources */ = {isa = PBXBuildFile; fileRef = BCCDF74028C8AF4D00A74BE6 /* 700x400.png */; };
+		BCCDF74328C8AF4D00A74BE6 /* 600x400.png in Resources */ = {isa = PBXBuildFile; fileRef = BCCDF74128C8AF4D00A74BE6 /* 600x400.png */; };
 		BCEA9E0B28C76C87005C0766 /* NewExpenseViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BCEA9E0A28C76C87005C0766 /* NewExpenseViewController.swift */; };
 /* End PBXBuildFile section */
 
@@ -56,6 +58,8 @@
 		BC3F566C28C222D000952856 /* ExpenseRegistryUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExpenseRegistryUITestsLaunchTests.swift; sourceTree = "<group>"; };
 		BC3F567928C2296F00952856 /* Persistence.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Persistence.swift; sourceTree = "<group>"; };
 		BC3F567F28C2343100952856 /* Expense.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Expense.swift; sourceTree = "<group>"; };
+		BCCDF74028C8AF4D00A74BE6 /* 700x400.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = 700x400.png; sourceTree = "<group>"; };
+		BCCDF74128C8AF4D00A74BE6 /* 600x400.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = 600x400.png; sourceTree = "<group>"; };
 		BCEA9E0A28C76C87005C0766 /* NewExpenseViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewExpenseViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -125,6 +129,7 @@
 		BC3F565F28C222D000952856 /* ExpenseRegistryTests */ = {
 			isa = PBXGroup;
 			children = (
+				BCCDF74428C8AF5100A74BE6 /* Test Images */,
 				BC3F566028C222D000952856 /* ExpenseRegistryTests.swift */,
 			);
 			path = ExpenseRegistryTests;
@@ -137,6 +142,15 @@
 				BC3F566C28C222D000952856 /* ExpenseRegistryUITestsLaunchTests.swift */,
 			);
 			path = ExpenseRegistryUITests;
+			sourceTree = "<group>";
+		};
+		BCCDF74428C8AF5100A74BE6 /* Test Images */ = {
+			isa = PBXGroup;
+			children = (
+				BCCDF74128C8AF4D00A74BE6 /* 600x400.png */,
+				BCCDF74028C8AF4D00A74BE6 /* 700x400.png */,
+			);
+			path = "Test Images";
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -253,6 +267,8 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				BCCDF74328C8AF4D00A74BE6 /* 600x400.png in Resources */,
+				BCCDF74228C8AF4D00A74BE6 /* 700x400.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
