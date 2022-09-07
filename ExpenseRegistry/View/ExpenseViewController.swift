@@ -1,5 +1,5 @@
 //
-//  NewExpenseViewController.swift
+//  ExpenseViewController.swift
 //  ExpenseRegistry
 //
 //  Created by Darren Black on 06/09/2022.
@@ -7,7 +7,7 @@
 
 import UIKit
 
-class NewExpenseViewController: UIViewController {
+class ExpenseViewController: UIViewController {
 
     var image: UIImage? {
         didSet {
@@ -21,16 +21,41 @@ class NewExpenseViewController: UIViewController {
     @IBOutlet weak var totalField: UITextField!
     @IBOutlet weak var noteField: UITextField!
     
+    var mode: Mode = .new
+    
+    enum Mode {
+        case new
+        case view(expense: Expense)
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-        // Do any additional setup after loading the view.
-        Task.init {
-            let capture = PhotoCapture()
-            image = await capture.captureImage(presenter: self)
-            if image == nil {
-                dismiss(animated: true)
+        switch (mode) {
+        case .new:
+            Task.init {
+                let capture = PhotoCapture()
+                image = await capture.captureImage(presenter: self)
+                if image == nil {
+                    dismiss(animated: true)
+                }
             }
+        case .view(expense: let expense):
+            // Populate the fields, switch off interaction
+            imageView.image = expense.image
+            titleField.text = expense.title
+            currencyField.text = expense.currency
+            totalField.text = String(expense.total)
+            noteField.text = expense.note
+            
+            [titleField, currencyField, totalField, noteField].forEach { field in
+                field?.isUserInteractionEnabled = false
+            }
+            
+            navigationItem.setRightBarButton(nil, animated: false)
+            navigationItem.setLeftBarButton(nil, animated: false)
+            navigationItem.title = "View Expense"
         }
+        
     }
 
     @IBAction func cancelButtonPressed(_ sender: Any) {

@@ -13,6 +13,8 @@ class ExpenseListViewController: UIViewController {
     
     var expenses = [Expense]()
     
+    var selectedExpense: Expense!
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -54,6 +56,13 @@ class ExpenseListViewController: UIViewController {
         return formatter.string(from: date)
     }
     
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if segue.identifier == "ShowExpense" {
+            let vc = segue.destination as! ExpenseViewController
+            vc.mode = .view(expense: selectedExpense)
+        }
+    }
+    
 }
 
 extension ExpenseListViewController: UITableViewDelegate, UITableViewDataSource {
@@ -73,6 +82,7 @@ extension ExpenseListViewController: UITableViewDelegate, UITableViewDataSource 
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        
+        selectedExpense = expenses[indexPath.item]
+        performSegue(withIdentifier: "ShowExpense", sender: nil)
     }
 }

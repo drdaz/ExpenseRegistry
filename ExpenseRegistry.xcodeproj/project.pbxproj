@@ -22,7 +22,7 @@
 		BC5C82C928C8D3B70004240D /* Shared.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC5C82C828C8D3B70004240D /* Shared.swift */; };
 		BCCDF74228C8AF4D00A74BE6 /* 700x400.png in Resources */ = {isa = PBXBuildFile; fileRef = BCCDF74028C8AF4D00A74BE6 /* 700x400.png */; };
 		BCCDF74328C8AF4D00A74BE6 /* 600x400.png in Resources */ = {isa = PBXBuildFile; fileRef = BCCDF74128C8AF4D00A74BE6 /* 600x400.png */; };
-		BCEA9E0B28C76C87005C0766 /* NewExpenseViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BCEA9E0A28C76C87005C0766 /* NewExpenseViewController.swift */; };
+		BCEA9E0B28C76C87005C0766 /* ExpenseViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BCEA9E0A28C76C87005C0766 /* ExpenseViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -62,7 +62,7 @@
 		BC5C82C828C8D3B70004240D /* Shared.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Shared.swift; sourceTree = "<group>"; };
 		BCCDF74028C8AF4D00A74BE6 /* 700x400.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = 700x400.png; sourceTree = "<group>"; };
 		BCCDF74128C8AF4D00A74BE6 /* 600x400.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = 600x400.png; sourceTree = "<group>"; };
-		BCEA9E0A28C76C87005C0766 /* NewExpenseViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewExpenseViewController.swift; sourceTree = "<group>"; };
+		BCEA9E0A28C76C87005C0766 /* ExpenseViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExpenseViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -148,7 +148,7 @@
 			children = (
 				BC5C82C828C8D3B70004240D /* Shared.swift */,
 				BC3F564A28C222CF00952856 /* ExpenseListViewController.swift */,
-				BCEA9E0A28C76C87005C0766 /* NewExpenseViewController.swift */,
+				BCEA9E0A28C76C87005C0766 /* ExpenseViewController.swift */,
 				BC3F564C28C222CF00952856 /* Main.storyboard */,
 				BC3F565428C222D000952856 /* LaunchScreen.storyboard */,
 			);
@@ -299,7 +299,7 @@
 			files = (
 				BC3F568028C2343100952856 /* Expense.swift in Sources */,
 				BC3F564B28C222CF00952856 /* ExpenseListViewController.swift in Sources */,
-				BCEA9E0B28C76C87005C0766 /* NewExpenseViewController.swift in Sources */,
+				BCEA9E0B28C76C87005C0766 /* ExpenseViewController.swift in Sources */,
 				BC3F565128C222CF00952856 /* ExpenseRegistry.xcdatamodeld in Sources */,
 				BC3F564728C222CF00952856 /* AppDelegate.swift in Sources */,
 				BC3F564928C222CF00952856 /* SceneDelegate.swift in Sources */,
