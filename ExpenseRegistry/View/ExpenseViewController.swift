@@ -63,6 +63,8 @@ class ExpenseViewController: UIViewController {
             navigationItem.title = "View Expense"
         }
         
+        setupTabbingBetweenFields(fields: [titleField, currencyField, totalField, noteField])
+        
     }
 
     @IBAction func cancelButtonPressed(_ sender: Any) {
@@ -114,6 +116,20 @@ class ExpenseViewController: UIViewController {
         }
         
     }
+    
+    fileprivate func setupTabbingBetweenFields(fields: [UITextField]) {
+        guard let last = fields.last else {
+            return
+        }
+        for i in 0...fields.count - 2 {
+            fields[i].returnKeyType = .next
+            fields[i].addTarget(fields[i+1], action: #selector(becomeFirstResponder), for: .editingDidEndOnExit)
+        }
+        last.returnKeyType = .done
+        last.addTarget(last, action: #selector(resignFirstResponder), for: .editingDidEndOnExit)
+        last.addTarget(self, action: #selector(saveButtonPressed(_:)), for: .editingDidEndOnExit)
+    }
+    
     
 }
 

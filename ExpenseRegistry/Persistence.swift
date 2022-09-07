@@ -40,6 +40,7 @@ struct Persistence {
         let imgData = fixOrientation(img: expense.image).pngData()!
         try imgData.write(to: url)
         
+        // Persist the data to Core Data
         let bgContext = context
         try await bgContext.perform(schedule: .immediate) {
             
