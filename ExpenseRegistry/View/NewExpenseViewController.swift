@@ -57,15 +57,27 @@ class NewExpenseViewController: UIViewController {
                 }
                 catch let e {
                     // Display an error
-                    print("TODO: Display a persistence error: \(e.localizedDescription)")
+                    Shared.UI.presentError(error: e, presenter: self)
                 }
 
             }
         }
         else {
             // Display an error
-            print("TODO: Display a validation error")
+            Shared.UI.presentError(error: ValidationError.missingArgs, presenter: self)
         }
+    }
+    
+    enum ValidationError: LocalizedError {
+        case missingArgs
+        
+        var errorDescription: String? {
+            switch (self) {
+            case .missingArgs:
+                return "Please provide values for title, currency and total."
+            }
+        }
+        
     }
     
 }

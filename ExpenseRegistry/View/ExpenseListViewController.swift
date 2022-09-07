@@ -32,8 +32,13 @@ class ExpenseListViewController: UIViewController {
         tableView.dataSource = self
         
         Task.init {
-            expenses = try await Persistence.getExpenses()
-            tableView.reloadData()
+            do {
+                expenses = try await Persistence.getExpenses()
+                tableView.reloadData()
+            }
+            catch let e {
+                Shared.UI.presentError(error: e, presenter: self)
+            }
         }
         
     }
