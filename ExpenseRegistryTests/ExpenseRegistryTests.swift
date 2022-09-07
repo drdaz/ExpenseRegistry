@@ -70,10 +70,9 @@ class ExpenseRegistryTests: XCTestCase {
         
         let savedExpenses = try await Persistence.getExpenses()
         
-        let savedSet = Set(savedExpenses)
-        let inputSet = Set(expenses)
-        
-        XCTAssert(inputSet.isSubset(of: savedSet))
+        expenses.forEach { expense in
+            XCTAssert(savedExpenses.contains(expense))
+        }
         
     }
     

@@ -79,6 +79,12 @@ struct Persistence {
         return NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true).first!
     }
     
+    static func image(filename: String) -> UIImage {
+        let url = URL(fileURLWithPath: dirPath).appendingPathComponent(filename)
+        let data = try! Data(contentsOf: url)
+        return UIImage(data: data)!
+    }
+    
 }
 
 fileprivate class FetchedResultsListener: NSObject, NSFetchedResultsControllerDelegate {
@@ -121,12 +127,12 @@ fileprivate class FetchedResultsListener: NSObject, NSFetchedResultsControllerDe
 fileprivate extension PersistentExpense {
     
     var expense: Expense {
-        return Expense(image: UIImage(contentsOfFile: Persistence.dirPath.appending("/\(filename!)"))!,
-                       currency: currency,
+        return Expense(currency: currency,
                        date: date!,
                        note: note,
                        title: title!,
-                       total: total)
+                       total: total,
+                       filename: filename)
     }
     
 }
